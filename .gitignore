@@ -41,6 +41,7 @@ ClientBin
 ~$*.xlsx
 *.obj
 *.lib
+!detours.lib
 *.exe
 *.cod
 *.pdb
