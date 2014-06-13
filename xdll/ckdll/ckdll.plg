@@ -1,0 +1,42 @@
+<html>
+<body>
+<pre>
+<h1>Build Log</h1>
+<h3>
+--------------------Configuration: ckdll - Win32 Release--------------------
+</h3>
+<h3>Command Lines</h3>
+Creating temporary file "C:\Users\ivanliu\AppData\Local\Temp\RSPA9D8.tmp" with contents
+[
+/nologo /MT /W3 /GX /O2 /I "../../base" /D "WIN32" /D "NDEBUG" /D "_WINDOWS" /D "_MBCS" /D "_USRDLL" /D "CKDLL_EXPORTS" /Fp"../../../obj/ckdll/Release/ckdll.pch" /Yu"stdafx.h" /Fo"../../../obj/ckdll/Release/" /Fd"../../../obj/ckdll/Release/" /FD /c 
+"D:\XDLL\XDLL\project\xdll\ckdll\ckdll.cpp"
+]
+Creating command line "cl.exe @C:\Users\ivanliu\AppData\Local\Temp\RSPA9D8.tmp" 
+Creating temporary file "C:\Users\ivanliu\AppData\Local\Temp\RSPA9D9.tmp" with contents
+[
+/nologo /MT /W3 /GX /O2 /I "../../base" /D "WIN32" /D "NDEBUG" /D "_WINDOWS" /D "_MBCS" /D "_USRDLL" /D "CKDLL_EXPORTS" /Fp"../../../obj/ckdll/Release/ckdll.pch" /Yc"stdafx.h" /Fo"../../../obj/ckdll/Release/" /Fd"../../../obj/ckdll/Release/" /FD /c 
+"D:\XDLL\XDLL\project\xdll\ckdll\StdAfx.cpp"
+]
+Creating command line "cl.exe @C:\Users\ivanliu\AppData\Local\Temp\RSPA9D9.tmp" 
+Creating temporary file "C:\Users\ivanliu\AppData\Local\Temp\RSPA9DA.tmp" with contents
+[
+kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib advapi32.lib shell32.lib ole32.lib oleaut32.lib uuid.lib odbc32.lib odbccp32.lib /nologo /dll /incremental:no /pdb:"../../../bin/Release/ckdll.pdb" /machine:I386 /out:"../../../bin/Release/ckdll.dll" /implib:"../../../bin/Release/ckdll.lib" 
+\XDLL\XDLL\obj\ckdll\Release\ckdll.obj
+\XDLL\XDLL\obj\ckdll\Release\StdAfx.obj
+]
+Creating command line "link.exe @C:\Users\ivanliu\AppData\Local\Temp\RSPA9DA.tmp"
+<h3>Output Window</h3>
+Compiling...
+StdAfx.cpp
+Compiling...
+ckdll.cpp
+Linking...
+   Creating library ../../../bin/Release/ckdll.lib and object ../../../bin/Release/ckdll.exp
+
+
+
+<h3>Results</h3>
+ckdll.dll - 0 error(s), 0 warning(s)
+</pre>
+</body>
+</html>

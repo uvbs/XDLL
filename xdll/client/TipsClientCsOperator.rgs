@@ -1,0 +1,26 @@
+HKCR
+{
+	Xdll.TipsClientCsOperator.1 = s 'TipsClientCsOperator Class'
+	{
+		CLSID = s '{0CCE582A-D911-4072-9B8F-A0A38562AE4C}'
+	}
+	Xdll.TipsClientCsOperator = s 'TipsClientCsOperator Class'
+	{
+		CLSID = s '{0CCE582A-D911-4072-9B8F-A0A38562AE4C}'
+		CurVer = s 'Xdll.TipsClientCsOperator.1'
+	}
+	NoRemove CLSID
+	{
+		ForceRemove {0CCE582A-D911-4072-9B8F-A0A38562AE4C} = s 'TipsClientCsOperator Class'
+		{
+			ProgID = s 'Xdll.TipsClientCsOperator.1'
+			VersionIndependentProgID = s 'Xdll.TipsClientCsOperator'
+			ForceRemove 'Programmable'
+			InprocServer32 = s '%MODULE%'
+			{
+				val ThreadingModel = s 'Apartment'
+			}
+			'TypeLib' = s '{1F35335B-7E02-4DEF-A687-22EB560031F5}'
+		}
+	}
+}

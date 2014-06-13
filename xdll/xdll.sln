@@ -1,0 +1,37 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 11.00
+# Visual Studio 2010
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{FBCFDED2-E57A-45D4-8B7F-F318D36944BE}"
+	ProjectSection(SolutionItems) = preProject
+		..\..\bin\Debug\blacks.txt = ..\..\bin\Debug\blacks.txt
+		..\..\bin\Debug\Task\Task-config.txt = ..\..\bin\Debug\Task\Task-config.txt
+		..\..\bin\Debug\Task\Task.txt = ..\..\bin\Debug\Task\Task.txt
+		..\..\bin\Debug\TipsServer.ini = ..\..\bin\Debug\TipsServer.ini
+		Vast.xml = Vast.xml
+		Vast.xsd = Vast.xsd
+		XMLFile1.xml = XMLFile1.xml
+	EndProjectSection
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "iptable", "iptable\iptable.vcxproj", "{BCFB4F29-FFF0-413A-9E97-EB11C320958C}"
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "xdllserver", "server\xdllserver.vcxproj", "{BDA86043-CFD5-414E-B9B6-0BA154463AC6}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Win32 = Debug|Win32
+		Release|Win32 = Release|Win32
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{BCFB4F29-FFF0-413A-9E97-EB11C320958C}.Debug|Win32.ActiveCfg = Debug|Win32
+		{BCFB4F29-FFF0-413A-9E97-EB11C320958C}.Debug|Win32.Build.0 = Debug|Win32
+		{BCFB4F29-FFF0-413A-9E97-EB11C320958C}.Release|Win32.ActiveCfg = Release|Win32
+		{BCFB4F29-FFF0-413A-9E97-EB11C320958C}.Release|Win32.Build.0 = Release|Win32
+		{BDA86043-CFD5-414E-B9B6-0BA154463AC6}.Debug|Win32.ActiveCfg = Debug|Win32
+		{BDA86043-CFD5-414E-B9B6-0BA154463AC6}.Debug|Win32.Build.0 = Debug|Win32
+		{BDA86043-CFD5-414E-B9B6-0BA154463AC6}.Release|Win32.ActiveCfg = Release|Win32
+		{BDA86043-CFD5-414E-B9B6-0BA154463AC6}.Release|Win32.Build.0 = Release|Win32
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal

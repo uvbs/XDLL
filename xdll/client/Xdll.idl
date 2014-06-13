@@ -1,0 +1,43 @@
+
+	// Xdll.idl : IDL source for Xdll.exe
+//
+// This file will be processed by the MIDL tool to
+// produce the type library (Xdll.tlb) and marshalling code.
+import "oaidl.idl";
+import "ocidl.idl";
+	[
+		object,
+		uuid(798A514B-1D16-4749-8B5E-77B4CA326A4E),
+		dual,
+		helpstring("ITipsClientCsOperator Interface"),
+		pointer_default(unique)
+	]
+	interface ITipsClientCsOperator : IDispatch
+	{
+		[id(1), propget]
+		HRESULT loadFlash([out, retval] VARIANT_BOOL* aLoadFlash);
+		[id(1), propput]
+		HRESULT loadFlash([in] VARIANT_BOOL aLoadFlash);
+		[id(2), propput]
+		HRESULT userAgent([in]BSTR strUserAgent);
+	};
+[
+	uuid(1F35335B-7E02-4DEF-A687-22EB560031F5),
+	version(1.0),
+	helpstring("Xdll 1.0 Type Library")
+]
+library XdllLib
+{
+	importlib("stdole32.tlb");
+	importlib("stdole2.tlb");
+	[
+		uuid(0CCE582A-D911-4072-9B8F-A0A38562AE4C),
+		helpstring("TipsClientCsOperator Class")
+	]
+	coclass TipsClientCsOperator
+	{
+		[default] interface ITipsClientCsOperator;
+	};
+};
+
+	

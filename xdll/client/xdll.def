@@ -1,0 +1,9 @@
+; xdll.def : Declares the module parameters for the DLL.
+
+LIBRARY      "TipsClient"
+DESCRIPTION  'TipsClient Windows Dynamic Link Library'
+
+EXPORTS
+    ; Explicit exports can go here
+	Startup @1
+	Cleanup @2

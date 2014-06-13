@@ -1,0 +1,78 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="Source Files">
+      <UniqueIdentifier>{4FC737F1-C7A5-4376-A066-2A32D752A2FF}</UniqueIdentifier>
+      <Extensions>cpp;c;cc;cxx;def;odl;idl;hpj;bat;asm;asmx</Extensions>
+    </Filter>
+    <Filter Include="Header Files">
+      <UniqueIdentifier>{93995380-89BD-4b04-88EB-625FBE52EBFB}</UniqueIdentifier>
+      <Extensions>h;hpp;hxx;hm;inl;inc;xsd</Extensions>
+    </Filter>
+    <Filter Include="Resource Files">
+      <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
+      <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav</Extensions>
+    </Filter>
+    <Filter Include="lib">
+      <UniqueIdentifier>{1e97a42b-9b12-44a1-8e73-fd4fd344ce5e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="lib\asio">
+      <UniqueIdentifier>{cdff62bf-1fa6-408f-aaca-e88c3f6c7736}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="stdafx.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="strings.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="TipsStatistic.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="xdllstatistic.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\base\synacast\asio\socket.cpp">
+      <Filter>lib\asio</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\base\synacast\asio\timer.cpp">
+      <Filter>lib\asio</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="global.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="stdafx.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="strings.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="TipsStatistic.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\base\synacast\asio\ioservice.h">
+      <Filter>lib\asio</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\base\synacast\asio\runner.h">
+      <Filter>lib\asio</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\base\synacast\asio\socket.h">
+      <Filter>lib\asio</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\base\synacast\asio\socketimpl.h">
+      <Filter>lib\asio</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\base\synacast\asio\ticktimer.h">
+      <Filter>lib\asio</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\base\synacast\asio\timer.h">
+      <Filter>lib\asio</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="ReadMe.txt" />
+  </ItemGroup>
+</Project>

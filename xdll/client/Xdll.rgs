@@ -1,0 +1,11 @@
+HKCR
+{
+	NoRemove AppID
+	{
+		{60D9A3E3-39FA-4CF0-B49C-1D1A49AF99D3} = s 'Xdll'
+		'Xdll.EXE'
+		{
+			val AppID = s {60D9A3E3-39FA-4CF0-B49C-1D1A49AF99D3}
+		}
+	}
+}

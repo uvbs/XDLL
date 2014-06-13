@@ -1,0 +1,64 @@
+<html>
+<body>
+<pre>
+<h1>Build Log</h1>
+<h3>
+--------------------Configuration: xdll - Win32 Release--------------------
+</h3>
+<h3>Command Lines</h3>
+Creating temporary file "C:\Users\ivanliu\AppData\Local\Temp\RSPA7B6.tmp" with contents
+[
+/nologo /o"../../../bin/Release/xdllclient.bsc" 
+\XDLL\XDLL\obj\xdll\Release\StdAfx.sbr
+\XDLL\XDLL\obj\xdll\Release\tinystr.sbr
+\XDLL\XDLL\obj\xdll\Release\tinyxml.sbr
+\XDLL\XDLL\obj\xdll\Release\tinyxmlerror.sbr
+\XDLL\XDLL\obj\xdll\Release\tinyxmlparser.sbr
+\XDLL\XDLL\obj\xdll\Release\AdConfig.sbr
+\XDLL\XDLL\obj\xdll\Release\AdPolicy.sbr
+\XDLL\XDLL\obj\xdll\Release\AsyncHttpDownloadListener.sbr
+\XDLL\XDLL\obj\xdll\Release\AutoLocks.sbr
+\XDLL\XDLL\obj\xdll\Release\Diskid32.sbr
+\XDLL\XDLL\obj\xdll\Release\DOMExtractor.sbr
+\XDLL\XDLL\obj\xdll\Release\ExternalObject.sbr
+\XDLL\XDLL\obj\xdll\Release\gstring.sbr
+\XDLL\XDLL\obj\xdll\Release\HookHelper.sbr
+\XDLL\XDLL\obj\xdll\Release\HopInfo.sbr
+\XDLL\XDLL\obj\xdll\Release\HopXmlConfig.sbr
+\XDLL\XDLL\obj\xdll\Release\httpimpl.sbr
+\XDLL\XDLL\obj\xdll\Release\HttpProtocol.sbr
+\XDLL\XDLL\obj\xdll\Release\IUTLauncher.sbr
+\XDLL\XDLL\obj\xdll\Release\LogVast.sbr
+\XDLL\XDLL\obj\xdll\Release\MsgTask.sbr
+\XDLL\XDLL\obj\xdll\Release\PlatformUA.sbr
+\XDLL\XDLL\obj\xdll\Release\RemoveCookie.sbr
+\XDLL\XDLL\obj\xdll\Release\RunningTask.sbr
+\XDLL\XDLL\obj\xdll\Release\Task.sbr
+\XDLL\XDLL\obj\xdll\Release\TipsClient.sbr
+\XDLL\XDLL\obj\xdll\Release\TipsClientCsOperator.sbr
+\XDLL\XDLL\obj\xdll\Release\TipsConvert.sbr
+\XDLL\XDLL\obj\xdll\Release\TipsUtil.sbr
+\XDLL\XDLL\obj\xdll\Release\WBWnd.sbr
+\XDLL\XDLL\obj\xdll\Release\webbrowser2.sbr
+\XDLL\XDLL\obj\xdll\Release\xdll.sbr
+\XDLL\XDLL\obj\xdll\Release\net.sbr
+\XDLL\XDLL\obj\xdll\Release\TimerWindow.sbr]
+Creating command line "bscmake.exe @C:\Users\ivanliu\AppData\Local\Temp\RSPA7B6.tmp"
+Creating browse info file...
+<h3>Output Window</h3>
+Creating temporary file "C:\Users\ivanliu\AppData\Local\Temp\RSPBCFC.bat" with contents
+[
+@echo off
+copy \XDLL\XDLL\bin\Release\TipsClient.dll "C:\Program Files\Common Files\PPLiveNetwork\3.5.1.0098\"
+]
+Creating command line "C:\Users\ivanliu\AppData\Local\Temp\RSPBCFC.bat"
+
+已复制         1 个文件。
+
+
+
+<h3>Results</h3>
+TipsClient.dll - 0 error(s), 0 warning(s)
+</pre>
+</body>
+</html>

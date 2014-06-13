@@ -1,0 +1,64 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<!--根节点，包含一个或多个Ad-->
+<Vast>
+  <!-- 广告信息容器，Ad有多个 -->
+  <Ad>
+    <!-- 完整广告信息，包含若干属性类字段如AdTitle和一个可选的错误上报URL，一个或多个监控URL，以及一个素材容器 -->
+    <!-- Inline和Wrapper二选一, 不可能都存在-->
+    <InLine>
+      <!-- 监控服务容器,, 支持多个 -->
+      <Impression id="id1">Url1</Impression>
+      <Impression id="id2">Url2</Impression>
+      ... ...
+      <!-- 素材容器，包括一个或多个广告素材 -->
+      <Creatives>
+        <!-- 素材，分为三种：Linear前贴/中插等需要停止视频播放的广告；CompanionAds背景等播放器外部的广告；NonLinearAds播放器内的字母/角标等不影响内容播放的广告 -->
+        <Creative>
+          <Linear>
+            <!-- 广告播放时长, 格式 hh:mm:ss -->
+            <Duration>00:00:30</Duration>
+            <TrackingEvents>
+              <!-- 第三方监控需要发的
+                strat开始播放发出的检测
+                complete 播放完成发出的检测
+                clode 用户主动关闭发送的
+                firstQuartile  播放了1/4 发出的检测
+                midpoint  播放了1/2 发出的检测
+                thirdQuartile 播放了 3/4 发出的检测
+                没过1s close 1%
+                支持多个 -->
+              <Tracking event="start|complete|firstQuartile|midpoint|thirdQuartile|close">Url</Tracking>
+              <Tracking event="start|complete|firstQuartile|midpoint|thirdQuartile|close">Url</Tracking>
+              <Tracking event="start|complete|firstQuartile|midpoint|thirdQuartile|close">Url</Tracking>
+              ... ...
+            </TrackingEvents>
+            <!-- 广告的点击 -->
+            <VideoClicks>
+              <!--广告的主点击链接，之后需要考虑2跳的-->
+              <ClickThrough>ClickUrl</ClickThrough>
+              <!--广告的点击检测链接，支持多个-->
+              <ClickTracking id="id1">ClickTrackerUrl1</ClickTracking>
+              <ClickTracking id="id2">ClickTrackerUrl2</ClickTracking>
+              ... ...
+            </VideoClicks>
+          </Linear>
+        </Creative>
+      </Creatives>
+    </InLine>
+  </Ad>
+  <Ad>
+    <!-- Inline和Wrapper二选一, 不可能都存在-->
+    <Wrapper>
+      <!-- 检测服务容器，同InLine里面的Impression -->
+      <Impression>...</Impression>
+      <Impression>...</Impression>
+
+      <!-- 素材容器，同InLine里面的Creatives-->
+      <Creatives>...</Creatives>
+    </Wrapper>
+  </Ad>
+  <Ad>...</Ad>
+  <Ad>...</Ad>
+  <Ad>...</Ad>
+  ...
+</Vast>

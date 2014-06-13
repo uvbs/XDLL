@@ -1,0 +1,99 @@
+<?xml version="1.0" encoding="gb2312"?>
+<task type="2">
+  <Urls>
+    <!-- probability 表示成功率，referer表示网站来源，
+         method表示执行referer的方式，0表示为默认方式，1表示先去xxx.com页，再跳回到指定页面-->
+    <url probability="100" method="1" referer="http://www.xxx.com">
+      <![CDATA[http://www.yyy.com]]>
+    </url>
+    <url probability="100" referer="http://www.xxx.com">
+      <![CDATA[http://www.yyy.com]]>
+    </url>
+    <url probability="200" referer="http://www.xxx.com">
+      <![CDATA[http://www.yyy.com]]>
+    </url>
+  </Urls>
+
+  <!-- 整个执行实例的执行时间,单位秒-->
+  <duration>180</duration>
+
+  <!--是否允许加载Flash,0表示不能Load Flash，1表示能够Load Flash-->
+  <loadFlash>0</loadFlash>
+
+  <!--是否允许弹出新窗口来执行任务-->
+  <isOpenWindow>0</isOpenWindow>
+
+  <!--特殊的UserAgents，如果没有这节，则采用正常的方式浏览-->
+  <UserAgents>
+    <!-- probability 表示几率
+         method表示执行referer的方式，0表示为默认方式，1表示先去xxx.com页，再跳回到指定页面-->
+    <ua probability="100"> Mozilla/5.0 (iPhone; U; CPU iPhone OS 3_0 like Mac OS X; en-us) AppleWebKit/528.18 (KHTML, like Gecko) Version/4.0 Mobile/7A341 Safari/528.16 </ua>
+    <ua probability="100">…</ua>
+    <ua probability="100">…</ua>
+    <ua probability="100">…</ua>
+  </UserAgents >
+
+  <!-- 清除cookie-->
+  <ClearCookies>
+    <!-- probability 为清除Cookie的几率，
+        method表示清楚Cookie的方式，表示直接删文件，表示用DeleteCookie API来做
+        interval表示清楚Cookie的间隔时间，表示距离上次清除cookie必须达到这个时间之后，才能够再次清楚，单位s
+        -->
+    <Do probability="-1" method="0" interval="604800">testtest</Do>
+    <Do probability="-1" method="1" >testtest</Do>
+  </ClearCookies>
+
+  <!--多条的策略控制-->
+  <Hops>
+    <!-- probability 表示跳转率，minInterval 表示跳时候最小间隔时间，单位s，
+maxInterval 表示跳时候最大间隔时间，
+         系统会在minInterval 和maxInterval选取一个时间作为最大间隔时间
+      -->
+    <Hop probability="60" minInterval="10" maxInterval="20" />
+    <Hop probability="95" minInterval="10" maxInterval="20" />
+    <Hop probability="95" minInterval="10" maxInterval="20" />
+    <Hop probability="95" minInterval="10" maxInterval="20" />
+    <Hop probability="95" minInterval="10" maxInterval="20" />
+    <Hop probability="95" minInterval="10" maxInterval="20" />
+    <Hop probability="95" minInterval="10" maxInterval="20" />
+    <Hop probability="95" minInterval="10" maxInterval="20" />
+  </Hops>
+  <!--多跳状态-->
+  <HopStates>
+    <!--跳转状态，主要满足这个状态，就可以执行多条逻辑
+        minHop 表示第几跳最小值，minHop 表示第几跳最大值，
+        clickMode 表示点击方式，表示完全随机方式，表示约考前，点击几率越大的方式，
+        hit 表示请求的url中包换这个关键词
+        miss 表示请求的url中不包含这个关键词-->
+    <HopState  minHop="0" maxHop="100" clickMode="1" hit="http://v.pptv.com/ ">
+      <Clickes>
+        <Click minProbability="0" maxProbability="90" begin="&lt;A "><![CDATA[href="http://v.]]></Click>
+        <Click minProbability="90" maxProbability="100" begin="&lt;A "><![CDATA[href="http://]]></Click>
+      </Clickes>
+    </HopState>
+    <HopState  minHop="0" maxHop="100" clickMode="1" hit="http://v.pptv.com/">
+      <Clickes>
+        <!--点击的方式
+            minProbability和maxProbability 表示随机点击的几率
+            priority 表示优先级，默认为，优先级越靠后，就越需要多次扫描来找到可点击的链接
+            begin 表示HTML元素的开头满足这个条件，如果有多个，使用||||竖线隔开
+            exclude 表示HTML元素不包含的这个条件，如果有多个，也使用||||竖线隔开
+            值表示中间包含的条件，如果有多个，也使用||||竖线隔开
+            -->
+        <Click minProbability="0" maxProbability="10" begin="&lt;A "><![CDATA[contact/]]></Click>
+        <Click minProbability="0" maxProbability="10" priority="1" begin=""><![CDATA[simu||||xxx]]></Click>
+        <Click minProbability="10" maxProbability="60" begin="&lt;A "><![CDATA[zzzz]]></Click>
+        <Click minProbability="10" maxProbability="60" priority="1" begin=""><![CDATA[simu||||xxx /]]></Click>
+        <Click minProbability="40" maxProbability="70" begin="&lt;A "><![CDATA[href="]]></Click>
+        <Click minProbability="70" maxProbability="90" priority="2" begin="&lt;A "><![CDATA[abcd/x]]></Click>
+        <Click minProbability="70" maxProbability="90" priority="2" begin="">xxxx</Click>
+        <Click minProbability="90" maxProbability="100" begin="&lt;A ">yyyy</Click>
+      </Clickes>
+    </HopState>
+    <HopState  minHop="0" maxHop="100" clickMode="1" hit="pptv.com">
+      <Clickes>
+        <Click minProbability="0" maxProbability="100" begin="&lt;A "><![CDATA[href="pptv.com]]></Click>
+      </Clickes>
+    </HopState>
+  </HopStates>
+</task>
