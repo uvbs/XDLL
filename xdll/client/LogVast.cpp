@@ -55,7 +55,7 @@ void LogVast::SendDllLoadLog()
 	pStartItems[2].pValue = T2W(Is64bit);
 	pStartItems[3].pName = L"ver";	//Tipsclient.dll的版本号
 	pStartItems[3].pValue = T2W(strFileVersion);
-	pStartItems[4].pName = L"chk";	//0表示不存在屏蔽软件或进程，1表示存在
+	pStartItems[4].pName = L"chk";	//0表示存在屏蔽软件或进程，1表示不存在
 	pStartItems[4].pValue = T2W(IsCanTipsRun);
 	pStartItems[5].pName = NULL;
 	pStartItems[5].pValue = NULL;

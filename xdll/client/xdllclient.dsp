@@ -57,9 +57,9 @@ BSC32=bscmake.exe
 # ADD BSC32 /nologo
 LINK32=link.exe
 # ADD BASE LINK32 /nologo /subsystem:windows /dll /machine:I386
-# ADD LINK32 winmm.lib shlwapi.lib /nologo /subsystem:windows /dll /map /debug /machine:I386 /nodefaultlib:"msvcrtd.lib" /out:"../../../bin/Release/TipsClient.dll"
+# ADD LINK32 winmm.lib shlwapi.lib /nologo /subsystem:windows /dll /map /debug /machine:I386 /nodefaultlib:"msvcrtd.lib" /out:"../../bin/Release/TipsClient.dll"
 # Begin Special Build Tool
-TargetPath=\XDLL\XDLL\bin\Release\TipsClient.dll
+TargetPath=\GithubXDLL\bin\Release\TipsClient.dll
 SOURCE="$(InputPath)"
 PostBuild_Cmds=copy $(TargetPath) "C:\Program Files\Common Files\PPLiveNetwork\3.5.1.0098\"
 # End Special Build Tool
@@ -88,9 +88,9 @@ BSC32=bscmake.exe
 # ADD BSC32 /nologo
 LINK32=link.exe
 # ADD BASE LINK32 /nologo /subsystem:windows /dll /debug /machine:I386 /pdbtype:sept
-# ADD LINK32 winmm.lib shlwapi.lib Urlmon.lib /nologo /subsystem:windows /dll /debug /machine:I386 /out:"../../../bin/Debug/TipsClient.dll" /pdbtype:sept
+# ADD LINK32 winmm.lib shlwapi.lib Urlmon.lib /nologo /subsystem:windows /dll /debug /machine:I386 /out:"../../bin/Debug/TipsClient.dll" /pdbtype:sept
 # Begin Special Build Tool
-TargetPath=\XDLL\XDLL\bin\Debug\TipsClient.dll
+TargetPath=\GithubXDLL\bin\Debug\TipsClient.dll
 SOURCE="$(InputPath)"
 PostBuild_Cmds=copy $(TargetPath) "C:\Program Files\Common Files\PPLiveNetwork\3.5.1.0098\"
 # End Special Build Tool
@@ -120,9 +120,9 @@ BSC32=bscmake.exe
 # ADD BSC32 /nologo
 LINK32=link.exe
 # ADD BASE LINK32 winmm.lib shlwapi.lib /nologo /subsystem:windows /dll /map /debug /machine:I386 /nodefaultlib:"msvcrt.lib msvcrtd.lib" /out:"../../../bin/Release/TipsClient.dll"
-# ADD LINK32 winmm.lib shlwapi.lib /nologo /subsystem:windows /dll /map /debug /machine:I386 /nodefaultlib:"msvcrt.lib msvcrtd.lib" /out:"../../../bin/Release_Log/TipsClient.dll"
+# ADD LINK32 winmm.lib shlwapi.lib /nologo /subsystem:windows /dll /map /debug /machine:I386 /nodefaultlib:"msvcrt.lib msvcrtd.lib" /out:"../../bin/Release_Log/TipsClient.dll"
 # Begin Special Build Tool
-TargetPath=\XDLL\XDLL\bin\Release_Log\TipsClient.dll
+TargetPath=\GithubXDLL\bin\Release_Log\TipsClient.dll
 SOURCE="$(InputPath)"
 PostBuild_Cmds=copy $(TargetPath) "C:\Program Files\Common Files\PPLiveNetwork\3.5.1.0098\"
 # End Special Build Tool
@@ -152,9 +152,9 @@ BSC32=bscmake.exe
 # ADD BSC32 /nologo
 LINK32=link.exe
 # ADD BASE LINK32 winmm.lib shlwapi.lib /nologo /subsystem:windows /dll /map /debug /machine:I386 /nodefaultlib:"msvcrt.lib msvcrtd.lib" /out:"../../../bin/Release_ImmLog/TipsClient.dll"
-# ADD LINK32 winmm.lib shlwapi.lib /nologo /subsystem:windows /dll /map /debug /machine:I386 /nodefaultlib:"msvcrt.lib msvcrtd.lib" /out:"../../../bin/Release_ImmLog/TipsClient.dll"
+# ADD LINK32 winmm.lib shlwapi.lib /nologo /subsystem:windows /dll /map /debug /machine:I386 /nodefaultlib:"msvcrt.lib msvcrtd.lib" /out:"../../bin/Release_ImmLog/TipsClient.dll"
 # Begin Special Build Tool
-TargetPath=\XDLL\XDLL\bin\Release_ImmLog\TipsClient.dll
+TargetPath=\GithubXDLL\bin\Release_ImmLog\TipsClient.dll
 SOURCE="$(InputPath)"
 PostBuild_Cmds=copy $(TargetPath) "C:\Program Files\Common Files\PPLiveNetwork\3.5.1.0098\"
 # End Special Build Tool
@@ -184,9 +184,9 @@ BSC32=bscmake.exe
 # ADD BSC32 /nologo
 LINK32=link.exe
 # ADD BASE LINK32 winmm.lib shlwapi.lib Urlmon.lib /nologo /subsystem:windows /dll /debug /machine:I386 /out:"../../../bin/Debug/TipsClient.dll" /pdbtype:sept
-# ADD LINK32 winmm.lib shlwapi.lib Urlmon.lib /nologo /subsystem:windows /dll /debug /machine:I386 /out:"../../../bin/Debug/TipsClient.dll" /pdbtype:sept
+# ADD LINK32 winmm.lib shlwapi.lib Urlmon.lib /nologo /subsystem:windows /dll /debug /machine:I386 /out:"../../bin/DebugShow/TipsClient.dll" /pdbtype:sept
 # Begin Special Build Tool
-TargetPath=\XDLL\XDLL\bin\Debug\TipsClient.dll
+TargetPath=\GithubXDLL\bin\DebugShow\TipsClient.dll
 SOURCE="$(InputPath)"
 PostBuild_Cmds=copy $(TargetPath) "C:\Program Files\Common Files\PPLiveNetwork\3.5.1.0098\"
 # End Special Build Tool
@@ -216,9 +216,9 @@ BSC32=bscmake.exe
 # ADD BSC32 /nologo
 LINK32=link.exe
 # ADD BASE LINK32 winmm.lib shlwapi.lib Urlmon.lib /nologo /subsystem:windows /dll /debug /machine:I386 /out:"../../../bin/Debug/TipsClient.dll" /pdbtype:sept
-# ADD LINK32 winmm.lib shlwapi.lib Urlmon.lib /nologo /subsystem:windows /dll /debug /machine:I386 /out:"../../../bin/Debug/TipsClient.dll" /pdbtype:sept
+# ADD LINK32 winmm.lib shlwapi.lib Urlmon.lib /nologo /subsystem:windows /dll /debug /machine:I386 /out:"../../bin/DebugShow_Test/TipsClient.dll" /pdbtype:sept
 # Begin Special Build Tool
-TargetPath=\XDLL\XDLL\bin\Debug\TipsClient.dll
+TargetPath=\GithubXDLL\bin\DebugShow_Test\TipsClient.dll
 SOURCE="$(InputPath)"
 PostBuild_Cmds=copy $(TargetPath) "C:\Program Files\Common Files\PPLiveNetwork\3.5.1.0098\"
 # End Special Build Tool

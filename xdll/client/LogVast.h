@@ -28,7 +28,7 @@ public:
 	CString IsDownloadVastxmlSucceed;	//0表示配置下载失败，1表示成功
 	CString IsSecure;					//0表示配置加密，1表示未加密，-1表示返回错误
 	CString IsLoadVastxmlSucceed;		//0表示配置加载失败，1表示成功
-	CString IsVastxmlEmpty;				//0表示配置返回为空，1表示不为空
+	CString IsVastxmlEmpty;				//0表示配置返回不为空，1表示为空
 
 	CString strAdid;					//广告单号
 	CString	nAdType;					//广告类型：1:inline；2:wrapper；3:VastAdTagUrl；4:BackupAdList

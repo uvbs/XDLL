@@ -6,59 +6,243 @@
 --------------------Configuration: xdll - Win32 Release--------------------
 </h3>
 <h3>Command Lines</h3>
-Creating temporary file "C:\Users\ivanliu\AppData\Local\Temp\RSPA7B6.tmp" with contents
+Creating command line "midl.exe /nologo /D "NDEBUG" /tlb "xdll___Win32_Release/Xdll.tlb" /h "Xdll_i.h" /iid "Xdll_i.c" /Oicf /win32 "D:\GithubXDLL\xdll\client\Xdll.idl""
+Creating command line "rc.exe /l 0x804 /fo"xdll___Win32_Release/xdll.res" /d "NDEBUG" /d "_AFXDLL" "D:\GithubXDLL\xdll\client\xdll.rc"" 
+Creating temporary file "C:\Users\ivanliu\AppData\Local\Temp\RSP1A3F.tmp" with contents
 [
-/nologo /o"../../../bin/Release/xdllclient.bsc" 
-\XDLL\XDLL\obj\xdll\Release\StdAfx.sbr
-\XDLL\XDLL\obj\xdll\Release\tinystr.sbr
-\XDLL\XDLL\obj\xdll\Release\tinyxml.sbr
-\XDLL\XDLL\obj\xdll\Release\tinyxmlerror.sbr
-\XDLL\XDLL\obj\xdll\Release\tinyxmlparser.sbr
-\XDLL\XDLL\obj\xdll\Release\AdConfig.sbr
-\XDLL\XDLL\obj\xdll\Release\AdPolicy.sbr
-\XDLL\XDLL\obj\xdll\Release\AsyncHttpDownloadListener.sbr
-\XDLL\XDLL\obj\xdll\Release\AutoLocks.sbr
-\XDLL\XDLL\obj\xdll\Release\Diskid32.sbr
-\XDLL\XDLL\obj\xdll\Release\DOMExtractor.sbr
-\XDLL\XDLL\obj\xdll\Release\ExternalObject.sbr
-\XDLL\XDLL\obj\xdll\Release\gstring.sbr
-\XDLL\XDLL\obj\xdll\Release\HookHelper.sbr
-\XDLL\XDLL\obj\xdll\Release\HopInfo.sbr
-\XDLL\XDLL\obj\xdll\Release\HopXmlConfig.sbr
-\XDLL\XDLL\obj\xdll\Release\httpimpl.sbr
-\XDLL\XDLL\obj\xdll\Release\HttpProtocol.sbr
-\XDLL\XDLL\obj\xdll\Release\IUTLauncher.sbr
-\XDLL\XDLL\obj\xdll\Release\LogVast.sbr
-\XDLL\XDLL\obj\xdll\Release\MsgTask.sbr
-\XDLL\XDLL\obj\xdll\Release\PlatformUA.sbr
-\XDLL\XDLL\obj\xdll\Release\RemoveCookie.sbr
-\XDLL\XDLL\obj\xdll\Release\RunningTask.sbr
-\XDLL\XDLL\obj\xdll\Release\Task.sbr
-\XDLL\XDLL\obj\xdll\Release\TipsClient.sbr
-\XDLL\XDLL\obj\xdll\Release\TipsClientCsOperator.sbr
-\XDLL\XDLL\obj\xdll\Release\TipsConvert.sbr
-\XDLL\XDLL\obj\xdll\Release\TipsUtil.sbr
-\XDLL\XDLL\obj\xdll\Release\WBWnd.sbr
-\XDLL\XDLL\obj\xdll\Release\webbrowser2.sbr
-\XDLL\XDLL\obj\xdll\Release\xdll.sbr
-\XDLL\XDLL\obj\xdll\Release\net.sbr
-\XDLL\XDLL\obj\xdll\Release\TimerWindow.sbr]
-Creating command line "bscmake.exe @C:\Users\ivanliu\AppData\Local\Temp\RSPA7B6.tmp"
+/nologo /MD /W3 /GX /Zi /O2 /I "../../base" /D "WIN32" /D "NDEBUG" /D "_WINDOWS" /D "_WINDLL" /D "_AFXDLL" /D "_MBCS" /D "_USRDLL" /FR"xdll___Win32_Release/" /Fp"xdll___Win32_Release/xdllclient.pch" /Yu"stdafx.h" /Fo"xdll___Win32_Release/" /Fd"xdll___Win32_Release/" /FD /c 
+"D:\GithubXDLL\xdll\client\tinystr.cpp"
+"D:\GithubXDLL\xdll\client\tinyxml.cpp"
+"D:\GithubXDLL\xdll\client\tinyxmlerror.cpp"
+"D:\GithubXDLL\xdll\client\tinyxmlparser.cpp"
+"D:\GithubXDLL\xdll\client\AdConfig.cpp"
+"D:\GithubXDLL\xdll\client\AdPolicy.cpp"
+"D:\GithubXDLL\xdll\client\AsyncHttpDownloadListener.cpp"
+"D:\GithubXDLL\xdll\client\AutoLocks.cpp"
+"D:\GithubXDLL\xdll\client\Diskid32.cpp"
+"D:\GithubXDLL\xdll\client\DOMExtractor.cpp"
+"D:\GithubXDLL\xdll\client\ExternalObject.cpp"
+"D:\GithubXDLL\xdll\client\gstring.cpp"
+"D:\GithubXDLL\xdll\client\HookHelper.cpp"
+"D:\GithubXDLL\xdll\client\HopInfo.cpp"
+"D:\GithubXDLL\xdll\client\HopXmlConfig.cpp"
+"D:\GithubXDLL\xdll\client\httpimpl.cpp"
+"D:\GithubXDLL\xdll\client\HttpProtocol.cpp"
+"D:\GithubXDLL\xdll\client\IUTLauncher.cpp"
+"D:\GithubXDLL\xdll\client\LogVast.cpp"
+"D:\GithubXDLL\xdll\client\MsgTask.cpp"
+"D:\GithubXDLL\xdll\client\PlatformUA.cpp"
+"D:\GithubXDLL\xdll\client\RemoveCookie.cpp"
+"D:\GithubXDLL\xdll\client\RunningTask.cpp"
+"D:\GithubXDLL\xdll\client\Task.cpp"
+"D:\GithubXDLL\xdll\client\TipsClient.cpp"
+"D:\GithubXDLL\xdll\client\TipsClientCsOperator.cpp"
+"D:\GithubXDLL\xdll\client\TipsConvert.cpp"
+"D:\GithubXDLL\xdll\client\TipsUtil.cpp"
+"D:\GithubXDLL\xdll\client\WBWnd.cpp"
+"D:\GithubXDLL\xdll\client\webbrowser2.cpp"
+"D:\GithubXDLL\xdll\client\xdll.cpp"
+"D:\GithubXDLL\base\ppl\mswin\mfc\net.cpp"
+"D:\GithubXDLL\base\ppl\mswin\mfc\TimerWindow.cpp"
+]
+Creating command line "cl.exe @C:\Users\ivanliu\AppData\Local\Temp\RSP1A3F.tmp" 
+Creating temporary file "C:\Users\ivanliu\AppData\Local\Temp\RSP1A40.tmp" with contents
+[
+/nologo /MD /W3 /GX /Zi /O2 /I "../../base" /D "WIN32" /D "NDEBUG" /D "_WINDOWS" /D "_WINDLL" /D "_AFXDLL" /D "_MBCS" /D "_USRDLL" /FR"xdll___Win32_Release/" /Fp"xdll___Win32_Release/xdllclient.pch" /Yc"stdafx.h" /Fo"xdll___Win32_Release/" /Fd"xdll___Win32_Release/" /FD /c 
+"D:\GithubXDLL\xdll\client\StdAfx.cpp"
+]
+Creating command line "cl.exe @C:\Users\ivanliu\AppData\Local\Temp\RSP1A40.tmp" 
+Creating temporary file "C:\Users\ivanliu\AppData\Local\Temp\RSP1A41.tmp" with contents
+[
+winmm.lib shlwapi.lib /nologo /subsystem:windows /dll /incremental:no /pdb:"xdll___Win32_Release/TipsClient.pdb" /map:"xdll___Win32_Release/TipsClient.map" /debug /machine:I386 /nodefaultlib:"msvcrtd.lib" /def:".\xdll.def" /out:"../../bin/Release/TipsClient.dll" /implib:"xdll___Win32_Release/TipsClient.lib" 
+.\xdll___Win32_Release\tinystr.obj
+.\xdll___Win32_Release\tinyxml.obj
+.\xdll___Win32_Release\tinyxmlerror.obj
+.\xdll___Win32_Release\tinyxmlparser.obj
+.\xdll___Win32_Release\AdConfig.obj
+.\xdll___Win32_Release\AdPolicy.obj
+.\xdll___Win32_Release\AsyncHttpDownloadListener.obj
+.\xdll___Win32_Release\AutoLocks.obj
+.\xdll___Win32_Release\Diskid32.obj
+.\xdll___Win32_Release\DOMExtractor.obj
+.\xdll___Win32_Release\ExternalObject.obj
+.\xdll___Win32_Release\gstring.obj
+.\xdll___Win32_Release\HookHelper.obj
+.\xdll___Win32_Release\HopInfo.obj
+.\xdll___Win32_Release\HopXmlConfig.obj
+.\xdll___Win32_Release\httpimpl.obj
+.\xdll___Win32_Release\HttpProtocol.obj
+.\xdll___Win32_Release\IUTLauncher.obj
+.\xdll___Win32_Release\LogVast.obj
+.\xdll___Win32_Release\MsgTask.obj
+.\xdll___Win32_Release\PlatformUA.obj
+.\xdll___Win32_Release\RemoveCookie.obj
+.\xdll___Win32_Release\RunningTask.obj
+.\xdll___Win32_Release\StdAfx.obj
+.\xdll___Win32_Release\Task.obj
+.\xdll___Win32_Release\TipsClient.obj
+.\xdll___Win32_Release\TipsClientCsOperator.obj
+.\xdll___Win32_Release\TipsConvert.obj
+.\xdll___Win32_Release\TipsUtil.obj
+.\xdll___Win32_Release\WBWnd.obj
+.\xdll___Win32_Release\webbrowser2.obj
+.\xdll___Win32_Release\xdll.obj
+.\xdll___Win32_Release\xdll.res
+.\xdll___Win32_Release\net.obj
+.\xdll___Win32_Release\TimerWindow.obj
+]
+Creating command line "link.exe @C:\Users\ivanliu\AppData\Local\Temp\RSP1A41.tmp"
+<h3>Output Window</h3>
+Creating Type Library...
+Processing D:\GithubXDLL\xdll\client\Xdll.idl
+Xdll.idl
+Processing C:\Program Files\Microsoft Visual Studio 7\vc2003\PlatformSDK\Include\oaidl.idl
+oaidl.idl
+Processing C:\Program Files\Microsoft Visual Studio 7\vc2003\PlatformSDK\Include\objidl.idl
+objidl.idl
+Processing C:\Program Files\Microsoft Visual Studio 7\vc2003\PlatformSDK\Include\unknwn.idl
+unknwn.idl
+Processing C:\Program Files\Microsoft Visual Studio 7\vc2003\PlatformSDK\Include\wtypes.idl
+wtypes.idl
+Processing C:\Program Files\Microsoft Visual Studio 7\vc2003\PlatformSDK\Include\basetsd.h
+basetsd.h
+Processing C:\Program Files\Microsoft Visual Studio 7\vc2003\PlatformSDK\Include\guiddef.h
+guiddef.h
+Processing C:\Program Files\Microsoft Visual Studio 7\vc2003\PlatformSDK\Include\ocidl.idl
+ocidl.idl
+Processing C:\Program Files\Microsoft Visual Studio 7\vc2003\PlatformSDK\Include\oleidl.idl
+oleidl.idl
+Processing C:\Program Files\Microsoft Visual Studio 7\vc2003\PlatformSDK\Include\servprov.idl
+servprov.idl
+Processing C:\Program Files\Microsoft Visual Studio 7\vc2003\PlatformSDK\Include\urlmon.idl
+urlmon.idl
+Processing C:\Program Files\Microsoft Visual Studio 7\vc2003\PlatformSDK\Include\msxml.idl
+msxml.idl
+Processing C:\Program Files\Microsoft Visual Studio 7\vc2003\PlatformSDK\Include\oaidl.acf
+oaidl.acf
+Processing C:\Program Files\Microsoft Visual Studio 7\vc2003\PlatformSDK\Include\ocidl.acf
+ocidl.acf
+Compiling resources...
+Compiling...
+StdAfx.cpp
+Compiling...
+tinystr.cpp
+tinyxml.cpp
+tinyxmlerror.cpp
+tinyxmlparser.cpp
+AdConfig.cpp
+AdPolicy.cpp
+AsyncHttpDownloadListener.cpp
+AutoLocks.cpp
+------ use simulated 64-bit GetTickCount
+------ use old random generator
+Diskid32.cpp
+DOMExtractor.cpp
+ExternalObject.cpp
+------ use simulated 64-bit GetTickCount
+------ use old random generator
+gstring.cpp
+HookHelper.cpp
+HopInfo.cpp
+HopXmlConfig.cpp
+------ use simulated 64-bit GetTickCount
+------ use old random generator
+httpimpl.cpp
+------ use simulated 64-bit GetTickCount
+------ use old random generator
+HttpProtocol.cpp
+IUTLauncher.cpp
+------ use simulated 64-bit GetTickCount
+------ use old random generator
+LogVast.cpp
+------ use simulated 64-bit GetTickCount
+------ use old random generator
+MsgTask.cpp
+Generating Code...
+------ use simulated 64-bit GetTickCount
+------ use old random generator
+Compiling...
+PlatformUA.cpp
+RemoveCookie.cpp
+RunningTask.cpp
+------ use simulated 64-bit GetTickCount
+------ use old random generator
+../../base\synacast/xdll/WebUtils.h(524) : warning C4101: 'e' : unreferenced local variable
+Task.cpp
+TipsClient.cpp
+------ use simulated 64-bit GetTickCount
+------ use old random generator
+../../base\synacast/xdll/WebUtils.h(524) : warning C4101: 'e' : unreferenced local variable
+TipsClientCsOperator.cpp
+TipsConvert.cpp
+TipsUtil.cpp
+------ use simulated 64-bit GetTickCount
+------ use old random generator
+WBWnd.cpp
+webbrowser2.cpp
+------ use simulated 64-bit GetTickCount
+------ use old random generator
+xdll.cpp
+net.cpp
+------ use simulated 64-bit GetTickCount
+------ use old random generator
+TimerWindow.cpp
+Generating Code...
+Linking...
+   Creating library xdll___Win32_Release/TipsClient.lib and object xdll___Win32_Release/TipsClient.exp
+Creating temporary file "C:\Users\ivanliu\AppData\Local\Temp\RSP9808.tmp" with contents
+[
+/nologo /o"xdll___Win32_Release/xdllclient.bsc" 
+.\xdll___Win32_Release\StdAfx.sbr
+.\xdll___Win32_Release\tinystr.sbr
+.\xdll___Win32_Release\tinyxml.sbr
+.\xdll___Win32_Release\tinyxmlerror.sbr
+.\xdll___Win32_Release\tinyxmlparser.sbr
+.\xdll___Win32_Release\AdConfig.sbr
+.\xdll___Win32_Release\AdPolicy.sbr
+.\xdll___Win32_Release\AsyncHttpDownloadListener.sbr
+.\xdll___Win32_Release\AutoLocks.sbr
+.\xdll___Win32_Release\Diskid32.sbr
+.\xdll___Win32_Release\DOMExtractor.sbr
+.\xdll___Win32_Release\ExternalObject.sbr
+.\xdll___Win32_Release\gstring.sbr
+.\xdll___Win32_Release\HookHelper.sbr
+.\xdll___Win32_Release\HopInfo.sbr
+.\xdll___Win32_Release\HopXmlConfig.sbr
+.\xdll___Win32_Release\httpimpl.sbr
+.\xdll___Win32_Release\HttpProtocol.sbr
+.\xdll___Win32_Release\IUTLauncher.sbr
+.\xdll___Win32_Release\LogVast.sbr
+.\xdll___Win32_Release\MsgTask.sbr
+.\xdll___Win32_Release\PlatformUA.sbr
+.\xdll___Win32_Release\RemoveCookie.sbr
+.\xdll___Win32_Release\RunningTask.sbr
+.\xdll___Win32_Release\Task.sbr
+.\xdll___Win32_Release\TipsClient.sbr
+.\xdll___Win32_Release\TipsClientCsOperator.sbr
+.\xdll___Win32_Release\TipsConvert.sbr
+.\xdll___Win32_Release\TipsUtil.sbr
+.\xdll___Win32_Release\WBWnd.sbr
+.\xdll___Win32_Release\webbrowser2.sbr
+.\xdll___Win32_Release\xdll.sbr
+.\xdll___Win32_Release\net.sbr
+.\xdll___Win32_Release\TimerWindow.sbr]
+Creating command line "bscmake.exe @C:\Users\ivanliu\AppData\Local\Temp\RSP9808.tmp"
 Creating browse info file...
 <h3>Output Window</h3>
-Creating temporary file "C:\Users\ivanliu\AppData\Local\Temp\RSPBCFC.bat" with contents
+Creating temporary file "C:\Users\ivanliu\AppData\Local\Temp\RSPA034.bat" with contents
 [
 @echo off
-copy \XDLL\XDLL\bin\Release\TipsClient.dll "C:\Program Files\Common Files\PPLiveNetwork\3.5.1.0098\"
+copy \GithubXDLL\bin\Release\TipsClient.dll "C:\Program Files\Common Files\PPLiveNetwork\3.5.1.0098\"
 ]
-Creating command line "C:\Users\ivanliu\AppData\Local\Temp\RSPBCFC.bat"
+Creating command line "C:\Users\ivanliu\AppData\Local\Temp\RSPA034.bat"
 
 已复制         1 个文件。
 
 
 
 <h3>Results</h3>
-TipsClient.dll - 0 error(s), 0 warning(s)
+TipsClient.dll - 0 error(s), 2 warning(s)
 </pre>
 </body>
 </html>

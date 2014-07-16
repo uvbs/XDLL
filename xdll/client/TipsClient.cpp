@@ -338,7 +338,7 @@ void TipsClient::SendModuleStartLog()
 	else
 		m_TipsLog.IsCanTipsRun = _T("0");
 		
-	m_TipsLog.SendDllLoadLog();
+//	m_TipsLog.SendDllLoadLog();
 }
 
 int TipsClient::Stop()

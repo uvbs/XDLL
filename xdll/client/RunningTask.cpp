@@ -393,7 +393,7 @@ void SimRunningTask::SendLink(int nTrackType, vector<string>& Links, ADInfo& adi
 			vastTrackLog.strAdid.Format(_T("%s"), adinfo.adid.c_str());
 			vastTrackLog.nTrackLinkType.Format("%d", nTrackType);
 			
-			vastTrackLog.SendLinkTrackLog();
+//			vastTrackLog.SendLinkTrackLog();
 		}
 	}
 }
@@ -697,7 +697,7 @@ void VASTSimRunningTask::Run()
 		// œ¬‘ÿ ß∞‹
 		APP_ERROR("URLDownloadToFile " << (LPCTSTR)m_strVastUrl << " Error");
 		m_VastGetLog.IsDownloadVastxmlSucceed = _T("0");
-		m_VastGetLog.SendConfigGetLog();
+//		m_VastGetLog.SendConfigGetLog();
 		return;
 	}
 	m_VastGetLog.IsDownloadVastxmlSucceed = _T("1");
@@ -718,7 +718,7 @@ void VASTSimRunningTask::Run()
 	else 
 	{
 		m_VastGetLog.IsSecure = _T("-1");
-		m_VastGetLog.SendConfigGetLog();
+//		m_VastGetLog.SendConfigGetLog();
 		ASSERT(0);
 		return;
 	}
@@ -782,7 +782,7 @@ bool SimRunningTask::RunClickLink(string& link, ADInfo& adInfo)
 	vastTrackLog.strAdid.Format(_T("%s"), adInfo.adid.c_str());
 	vastTrackLog.nTrackLinkType.Format("%d", CLICK_LINK);
 	
-	vastTrackLog.SendLinkTrackLog();
+//	vastTrackLog.SendLinkTrackLog();
 
 	return true;
 }

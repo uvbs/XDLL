@@ -129,11 +129,20 @@ public:
 	AdConfig(){}
 	bool LoadXml(string path);
 	bool LoadXml(TiXmlElement* rootElement);
-	int getPlaytime(string strDuration);	//获得广告播放时长，格式hh:mm:ss，转换为int
-	bool LoadXmlFromVast(string path, LogVast& vastGetLog);
-	void FilterTracklinkLog(ADInfo& adinfo, LogVast& vastParseLog);	//日志只统计含jp.as.pptv.com的监测
+
 	void ClearData();
 	bool IsCorrect();
-	bool GetWrapperURI(TempWrapperInfo& tWrapperInfo, const string& url, int RecursionNum);
-	bool LoadXmlFromWraperURI(string path, TempWrapperInfo& tWrapperInfo, int RecursionNum);	//读取Wrapper中VASTAdTagURI
+
+	bool GetVASTAdTagURI(LogVast&, string&, TiXmlElement*, TempWrapperInfo&);						//Wrapper中存在VASTAdTagURI, 则递归获取
+	bool DownloadVASTAdTagURI(TempWrapperInfo& tWrapperInfo, const string& url, int RecursionNum);	//下载VASTAdTagURI
+	bool LoadXmlFromVASTAdTagURI(string path, TempWrapperInfo& tWrapperInfo, int RecursionNum);		//解析VASTAdTagURI
+	
+	bool LoadXmlFromVast(string path, LogVast& vastGetLog);
+	void FilterTracklinkLog(ADInfo& adinfo, LogVast& vastParseLog);				//日志只统计含jp.as.pptv.com的监测
+		
+	int GetPlaytime(string strDuration);										//获得广告播放时长，格式hh:mm:ss，转换为int
+	void MergeVASTAdTagURIData(TempWrapperInfo&, ADInfo&);						//合并<VASTAdTagURI>数据
+	void GetTipsData(TiXmlElement*, ADInfo&);									//获取tips数据
+	void GetTrackingData(TiXmlElement*, ADInfo&);								//获取监测数据
+	void GetVideoClickData(TiXmlElement*, string&, string&, ADInfo&);			//获取link，clicklinks
 };

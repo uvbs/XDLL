@@ -32,7 +32,7 @@ bool AdConfig::LoadXml(string path)
 	return LoadXml(rootElement);
 }
 
-int AdConfig::getPlaytime(string strDuration)
+int AdConfig::GetPlaytime(string strDuration)
 {
 	//! 注意容错, 如果格式不对，也设置为15s
 	int nErrorReturn = 15;
@@ -53,7 +53,7 @@ int AdConfig::getPlaytime(string strDuration)
 	return nplaytime;
 } 
 
-bool AdConfig::GetWrapperURI(TempWrapperInfo& tWrapperInfo, const string& url, int RecursionNum)
+bool AdConfig::DownloadVASTAdTagURI(TempWrapperInfo& tWrapperInfo, const string& url, int RecursionNum)
 {
 	USES_CONVERSION;
 
@@ -74,14 +74,14 @@ bool AdConfig::GetWrapperURI(TempWrapperInfo& tWrapperInfo, const string& url, i
 	}
 	
 	//递归读取Wrapper中VASTAdTagURI
-	bool bLoadXml = LoadXmlFromWraperURI(T2A(szCachePath), tWrapperInfo, RecursionNum);
+	bool bLoadXml = LoadXmlFromVASTAdTagURI(T2A(szCachePath), tWrapperInfo, RecursionNum);
 	if (bLoadXml)
 		return true;
 
 	return false;
 }
 
-bool AdConfig::LoadXmlFromWraperURI(string path, TempWrapperInfo& tWrapperInfo, int RecursionNum)
+bool AdConfig::LoadXmlFromVASTAdTagURI(string path, TempWrapperInfo& tWrapperInfo, int RecursionNum)
 {
 	APP_EVENT("LoadXmlFromWrapperURI: " << path);
 	TiXmlDocument* myDocument = new TiXmlDocument();
@@ -126,10 +126,18 @@ bool AdConfig::LoadXmlFromWraperURI(string path, TempWrapperInfo& tWrapperInfo, 
 						if (VastAdTagUriText)
 						{
 							string tempWrapperUrl = VastAdTagUriText;
-							bool bRtn = GetWrapperURI(tWrapperInfo, tempWrapperUrl, RecursionNum++);
+							bool bRtn = DownloadVASTAdTagURI(tWrapperInfo, tempWrapperUrl, RecursionNum++);
 							if (!bRtn) return false;
 						}
 					}
+				}
+
+				TiXmlElement* ImpressionElement = InLineOrWrapperElement->FirstChildElement("Impression");
+				vector<string> impressions;
+				while (ImpressionElement)
+				{
+					impressions.push_back(MakeToString(ImpressionElement->GetText()));
+					ImpressionElement = ImpressionElement->NextSiblingElement("Impression");
 				}
 
 				TiXmlElement* CreativesElement = InLineOrWrapperElement->FirstChildElement("Creatives");
@@ -138,6 +146,12 @@ bool AdConfig::LoadXmlFromWraperURI(string path, TempWrapperInfo& tWrapperInfo, 
 					TiXmlElement* CreativeElement = CreativesElement->FirstChildElement("Creative");
 					while (CreativeElement)
 					{
+						//合并<impression>数据
+						for (vector<string>::iterator pImp = impressions.begin(); pImp != impressions.end(); ++pImp)
+						{
+							tWrapperInfo.startLinks.push_back(*pImp);
+						}
+
 						TiXmlElement* MaterialElement = CreativeElement->FirstChildElement();
 						if (MaterialElement)
 						{
@@ -224,17 +238,290 @@ bool AdConfig::LoadXmlFromWraperURI(string path, TempWrapperInfo& tWrapperInfo, 
 	return true;
 }
 
+//Wrapper中存在VASTAdTagURI, 则递归获取
+bool AdConfig::GetVASTAdTagURI(LogVast& vastParseLog, string& strInLineOrWrapperName, TiXmlElement* InLineOrWrapperElement, TempWrapperInfo& tWrapperInfo)
+{
+	vastParseLog.nAdType = _T("1");
+	
+	if (strInLineOrWrapperName == "Wrapper")
+	{
+		vastParseLog.nAdType = _T("2");
+		TiXmlElement* VASTAdTagURIElement = InLineOrWrapperElement->FirstChildElement("VASTAdTagURI");
+		if (VASTAdTagURIElement)
+		{
+			vastParseLog.nAdType = _T("3");
+			const char* VastAdTagUriText = VASTAdTagURIElement->GetText();
+			if (VastAdTagUriText)
+			{
+				string tempWrapperUrl = VastAdTagUriText;
+				bool bRtn = DownloadVASTAdTagURI(tWrapperInfo, tempWrapperUrl, 1);
+				if (!bRtn) return false;
+			}
+		}
+	}
+	return true;
+}
+
+//合并<VASTAdTagURI>数据
+void AdConfig::MergeVASTAdTagURIData(TempWrapperInfo& tWrapperInfo, ADInfo& creativeInfo)
+{
+	for (vector<string>::iterator pStart = tWrapperInfo.startLinks.begin(); pStart != tWrapperInfo.startLinks.end(); ++pStart)
+	{
+		creativeInfo.startLinks.push_back(*pStart);
+	}
+	
+	for (vector<string>::iterator pEnd = tWrapperInfo.endLinks.begin(); pEnd != tWrapperInfo.endLinks.end(); ++pEnd)
+	{
+		creativeInfo.endLinks.push_back(*pEnd);
+	}
+	
+	for (vector<string>::iterator pFirst = tWrapperInfo.firstQuartileLinks.begin(); pFirst != tWrapperInfo.firstQuartileLinks.end(); ++pFirst)
+	{
+		creativeInfo.firstQuartileLinks.push_back(*pFirst);
+	}
+	
+	for (vector<string>::iterator pMid = tWrapperInfo.midpointLinks.begin(); pMid != tWrapperInfo.midpointLinks.end(); ++pMid)
+	{
+		creativeInfo.midpointLinks.push_back(*pMid);
+	}
+	
+	for (vector<string>::iterator pThird = tWrapperInfo.thirdQuartileLinks.begin(); pThird != tWrapperInfo.thirdQuartileLinks.end(); ++pThird)
+	{
+		creativeInfo.thirdQuartileLinks.push_back(*pThird);
+	}
+	
+	for (vector<string>::iterator pClose = tWrapperInfo.closeLinks.begin(); pClose != tWrapperInfo.closeLinks.end(); ++pClose)
+	{
+		creativeInfo.closeLinks.push_back(*pClose);
+	}
+	
+	for (vector<string>::iterator pClick = tWrapperInfo.clickLinks.begin(); pClick != tWrapperInfo.clickLinks.end(); ++pClick)
+	{
+		creativeInfo.clickLinks.push_back(*pClick);
+	}
+}
+
+//获取tips数据
+void AdConfig::GetTipsData(TiXmlElement* MaterialElement, ADInfo& creativeInfo)
+{
+	TiXmlElement* CreativeExtensionsElement = MaterialElement->FirstChildElement("CreativeExtensions");
+	if (CreativeExtensionsElement)
+	{ 
+		TiXmlElement* CreativeExtensionElement = CreativeExtensionsElement->FirstChildElement("CreativeExtension");
+		if (CreativeExtensionElement)
+		{
+			TiXmlElement* tipsElement = CreativeExtensionElement->FirstChildElement("Tips");
+			if (tipsElement)
+			{
+				TiXmlElement* UserAgentElement = tipsElement->FirstChildElement("UserAgent");
+				if (UserAgentElement)
+				{
+					creativeInfo.tips.userAgent = MakeToString(UserAgentElement->GetText());
+				}
+				
+				TiXmlElement* RefererElement = tipsElement->FirstChildElement("Referer");
+				if(RefererElement)
+				{
+					creativeInfo.tips.referer = MakeToString(RefererElement->GetText());
+				}
+				
+				TiXmlElement* ClickRateElement = tipsElement->FirstChildElement("ClickRate");
+				if (ClickRateElement)
+				{
+					creativeInfo.tips.clickRate = MakeToFloat(ClickRateElement->GetText());
+				}
+				
+				TiXmlElement* HopsElement = tipsElement->FirstChildElement("Hops");
+				if (HopsElement)
+				{
+					creativeInfo.tips.hops = MakeToString(HopsElement->GetText());
+				}
+				
+				TiXmlElement* MinDurationElement = tipsElement->FirstChildElement("MinDuration");
+				if (MinDurationElement)
+				{
+					creativeInfo.tips.minDuration = MakeToInt(MinDurationElement->GetText());
+				}
+				
+				TiXmlElement* MaxDurationElement = tipsElement->FirstChildElement("MaxDuration");
+				if (MaxDurationElement)
+				{
+					creativeInfo.tips.maxDuration = MakeToInt(MaxDurationElement->GetText());
+				}
+				
+				TiXmlElement* MinHopTimeElement = tipsElement->FirstChildElement("MinHopTime");
+				if(MinHopTimeElement)
+				{
+					creativeInfo.tips.minHopTime = MakeToInt(MinHopTimeElement->GetText());
+				}
+				
+				TiXmlElement* MaxHopTimeElement = tipsElement->FirstChildElement("MaxHopTime");
+				if (MaxHopTimeElement)
+				{
+					creativeInfo.tips.maxHopTime = MakeToInt(MaxHopTimeElement->GetText());
+				}
+				
+				TiXmlElement* RuleElement = tipsElement->FirstChildElement("Rule");
+				if(RuleElement)
+				{
+					creativeInfo.tips.rule = MakeToString(RuleElement->GetText());
+				}
+				
+				TiXmlElement* GroupIDElement = tipsElement->FirstChildElement("GroupID");
+				if (GroupIDElement)
+				{
+					creativeInfo.tips.groupID = MakeToInt(GroupIDElement->GetText());
+				}
+				
+				TiXmlElement* RemoveCookieRateElement = tipsElement->FirstChildElement("RemoveCookieRate");
+				if (RemoveCookieRateElement)
+				{
+					creativeInfo.tips.removeCookieRate = MakeToInt(RemoveCookieRateElement->GetText());
+				}
+				
+				TiXmlElement* RemoveCookiesElement = tipsElement->FirstChildElement("RemoveCookies");
+				if (RemoveCookiesElement)
+				{
+					creativeInfo.tips.removeCookies = MakeToString(RemoveCookiesElement->GetText());
+				}
+				
+				TiXmlElement* RemoveFlashCookieRateElement = tipsElement->FirstChildElement("RemoveFlashCookieRate");
+				if(RemoveFlashCookieRateElement)
+				{
+					creativeInfo.tips.removeFlashCookieRate = MakeToInt(RemoveFlashCookieRateElement->GetText());
+				}
+				
+				TiXmlElement* RemoveFlashCookiesElement = tipsElement->FirstChildElement("RemoveFlashCookies");
+				if(RemoveFlashCookiesElement)
+				{
+					creativeInfo.tips.removeFlashCookies = MakeToString(RemoveFlashCookiesElement->GetText());
+				}
+				
+				TiXmlElement* LoadFlashElement = tipsElement->FirstChildElement("LoadFlash");
+				if (LoadFlashElement)
+				{
+					creativeInfo.tips.loadFlash = MakeToInt(LoadFlashElement->GetText());
+				}
+				
+				TiXmlElement* RefererModeElement = tipsElement->FirstChildElement("RefererMode");
+				if (RefererModeElement)
+				{
+					creativeInfo.tips.refererMode = MakeToInt(RefererModeElement->GetText());
+				}
+				
+				TiXmlElement* IsOpenWindowElement = tipsElement->FirstChildElement("IsOpenWindow");
+				if(IsOpenWindowElement)
+				{
+					creativeInfo.tips.isOpenWindow = MakeToInt(IsOpenWindowElement->GetText());
+				}
+				
+				TiXmlElement* DirectionalModeElement = tipsElement->FirstChildElement("DirectionalMode");
+				if(DirectionalModeElement)
+				{
+					creativeInfo.tips.directionalMode = MakeToInt(DirectionalModeElement->GetText());
+				}
+				
+				TiXmlElement* DirectionalElement = tipsElement->FirstChildElement("Directional");
+				if (DirectionalElement)
+				{
+					creativeInfo.tips.directional = MakeToString(DirectionalElement->GetText());
+				}
+				
+				TiXmlElement* UrlFilterTypeElement = tipsElement->FirstChildElement("UrlFilterType");
+				if(UrlFilterTypeElement)
+				{
+					creativeInfo.tips.urlFilterType = MakeToInt(UrlFilterTypeElement->GetText());
+				}
+				
+				TiXmlElement* UrlFilterElement = tipsElement->FirstChildElement("UrlFilter");
+				if(UrlFilterElement)
+				{
+					creativeInfo.tips.urlFilter = MakeToString(UrlFilterElement->GetText());
+				}
+				
+				TiXmlElement* PlatformElement = tipsElement->FirstChildElement("Platform");
+				if(PlatformElement)
+				{
+					char* pPlatform = (char*)MakeToString(PlatformElement->GetText());
+					creativeInfo.tips.platform = pPlatform;
+				}
+			}	
+		}
+	} 
+}
+
+//获取监测数据，start|complete|firstQuartile|midpoint|thirdQuartile|close
+void AdConfig::GetTrackingData(TiXmlElement* trackingEventsElement, ADInfo& creativeInfo)
+{
+	TiXmlElement* TrackingElement = trackingEventsElement->FirstChildElement("Tracking");
+	while(TrackingElement)
+	{
+		string eventname = MakeToString(TrackingElement->Attribute("event"));
+		if (eventname == "start")
+		{
+			creativeInfo.startLinks.push_back(MakeToString(TrackingElement->GetText()));
+		}
+		else if (eventname == "complete")
+		{
+			creativeInfo.endLinks.push_back(MakeToString(TrackingElement->GetText()));
+		}
+		else if (eventname == "firstQuartile")
+		{
+			creativeInfo.firstQuartileLinks.push_back(MakeToString(TrackingElement->GetText()));
+		}
+		else if (eventname == "midpoint")
+		{
+			creativeInfo.midpointLinks.push_back(MakeToString(TrackingElement->GetText()));
+		}
+		else if (eventname == "thirdQuartile")
+		{
+			creativeInfo.thirdQuartileLinks.push_back(MakeToString(TrackingElement->GetText()));
+		}
+		else if (eventname == "close")
+		{
+			creativeInfo.closeLinks.push_back(MakeToString(TrackingElement->GetText()));
+		}
+		
+		TrackingElement = TrackingElement->NextSiblingElement("Tracking");
+	}
+}
+
+//获取link，clicklinks
+void AdConfig::GetVideoClickData(TiXmlElement* videoClicksElement, string& strInLineOrWrapperName, string& Wrapperlink, ADInfo& creativeInfo)
+{
+	if(videoClicksElement)
+	{
+		TiXmlElement* clickThroughElement = videoClicksElement->FirstChildElement("ClickThrough");
+		if (clickThroughElement)
+		{
+			creativeInfo.link = MakeToString(clickThroughElement->GetText());
+		}
+		
+		if (strInLineOrWrapperName == "Wrapper" && false == Wrapperlink.empty())
+		{
+			creativeInfo.link = Wrapperlink;
+		}
+		
+		TiXmlElement* clicktrackingElement = videoClicksElement->FirstChildElement("ClickTracking");
+		while (clicktrackingElement)
+		{
+			creativeInfo.clickLinks.push_back(MakeToString(clicktrackingElement->GetText()));
+			clicktrackingElement = clicktrackingElement->NextSiblingElement("ClickTracking");
+		}
+	}
+}
+
 bool AdConfig::LoadXmlFromVast(string path, LogVast& vastGetLog)
 {
 	APP_EVENT("LoadXmlFromVast: " << path); 
 	TiXmlDocument* myDocument = new TiXmlDocument();
-	bool b = myDocument->LoadFile(path.c_str());
-	if (!b)
+	bool bLoadFile = myDocument->LoadFile(path.c_str());
+	if (!bLoadFile)
 	{
 		APP_ERROR("Load XmlFromVast Failed ! " << path);
 		vastGetLog.IsLoadVastxmlSucceed = _T("0");
-		vastGetLog.SendConfigGetLog();
-		return b;
+//		vastGetLog.SendConfigGetLog();
+		return false;
 	}
 	APP_EVENT("Load Xml Succeed...");
 
@@ -242,395 +529,142 @@ bool AdConfig::LoadXmlFromVast(string path, LogVast& vastGetLog)
 	if (!rootElement)
 	{
 		vastGetLog.IsLoadVastxmlSucceed = _T("0");
-		vastGetLog.SendConfigGetLog();
+//		vastGetLog.SendConfigGetLog();
 		return false;
 	}
 	APP_EVENT("rootElement: "<<rootElement->Value());
 	vastGetLog.IsLoadVastxmlSucceed = _T("1");
 
-	TiXmlElement* element = rootElement->FirstChildElement("Ad");
-	if (element)
+	TiXmlElement* AdElement = rootElement->FirstChildElement("Ad");
+	if (AdElement)
 		vastGetLog.IsVastxmlEmpty = _T("0");	//vast配置返回不为空
 	else
-		vastGetLog.IsVastxmlEmpty = _T("1");	//vast配置返回为空
-	vastGetLog.SendConfigGetLog();		
+		vastGetLog.IsVastxmlEmpty = _T("1");	//vast配置返回为空	
+//	vastGetLog.SendConfigGetLog();
 
-	while (element)
+	while (AdElement)
 	{
 		LogVast vastParseLog;
 		if (LogVast::strJuid.IsEmpty())
 			LogVast::strJuid = TipsUtil::GetJuid();
-			
-		string Adid = MakeToString(element->Attribute("id")); 
+		
+		string Adid = MakeToString(AdElement->Attribute("id")); 
 		vastParseLog.strAdid.Format(_T("%s"), Adid.c_str());
-
-		TiXmlElement* InLineOrWrapperElement = element->FirstChildElement();
-
-		if(InLineOrWrapperElement)
+		
+		TiXmlElement* InLineOrWrapperElement = AdElement->FirstChildElement();
+		if(!InLineOrWrapperElement)
 		{
-			// 判断是否是 InLine Or Wrapper，如果不是就放弃这个Ad，看下一个Ad
-			string  strInLineOrWrapperName = MakeToString(InLineOrWrapperElement->Value());
-			if (strInLineOrWrapperName == "InLine" || strInLineOrWrapperName == "Wrapper")
-			{	
-				vastParseLog.nAdType = _T("1");
-				//Wrapper中存在VASTAdTagURI, 则递归获取
-				TempWrapperInfo tWrapperInfo; 
-				if (strInLineOrWrapperName == "Wrapper")
-				{
-					vastParseLog.nAdType = _T("2");
-					TiXmlElement* VASTAdTagURIElement = InLineOrWrapperElement->FirstChildElement("VASTAdTagURI");
-					if (VASTAdTagURIElement)
-					{
-						vastParseLog.nAdType = _T("3");
-						const char* VastAdTagUriText = VASTAdTagURIElement->GetText();
-						if (VastAdTagUriText)
-						{
-							string tempWrapperUrl = VastAdTagUriText;
-							bool bRtn = GetWrapperURI(tWrapperInfo, tempWrapperUrl, 1);
-							if (!bRtn)
-							{
-								vastParseLog.IsAdEmpty = _T("1");
-								vastParseLog.SendXmlParseLog();
-								element = element->NextSiblingElement("Ad");
-								continue;	//若VASTAdTagURI的链接，下载失败、解析失败或返回空，均跳过此<Ad>节点
-							}
-						}
-					}
-				}
-
-				TiXmlElement* ImpressionElement = InLineOrWrapperElement->FirstChildElement("Impression");
-				vector<string> impressions;
-				while (ImpressionElement)
-				{
-					//APP_EVENT("Impression: "<<MakeToString(ImpressionElement->GetText()));
-					impressions.push_back(MakeToString(ImpressionElement->GetText()));
-					ImpressionElement = ImpressionElement->NextSiblingElement("Impression");
-				}
-				
-				TiXmlElement* CreativesElement = InLineOrWrapperElement->FirstChildElement("Creatives");
-				if (!CreativesElement)
-				{
-					vastParseLog.IsAdEmpty = _T("1");
-					vastParseLog.SendXmlParseLog();
-				}
-				else
-				{
-					TiXmlElement* CreativeElement = CreativesElement->FirstChildElement("Creative");
-					if (!CreativeElement)
-					{
-						vastParseLog.IsAdEmpty = _T("1");
-						vastParseLog.SendXmlParseLog();
-					}
-					else
-					{
-						vastParseLog.IsAdEmpty = _T("0");
-						vastParseLog.existStartTrack = _T("0");
-						vastParseLog.existCompleteTrack = _T("0");
-						vastParseLog.existFirstQuartileTrack = _T("0");
-						vastParseLog.existMidpointTrack = _T("0");
-						vastParseLog.existThirdQuartileTrack = _T("0");
-						vastParseLog.existClickLink = _T("0");
-						vastParseLog.existClickTrack = _T("0");
-
-						while (CreativeElement)
-						{
-							ADInfo creativeInfo;
-							
-							creativeInfo.adid = Adid;	//广告单号
-
-							for (vector<string>::iterator pImp = impressions.begin(); pImp != impressions.end(); ++pImp)
-							{
-								creativeInfo.startLinks.push_back(*pImp);
-							}
-							
-							//将Wrapper中VASTAdTagURI嵌套的数据读出
-							if (strInLineOrWrapperName == "Wrapper")
-							{
-								for (vector<string>::iterator pStart = tWrapperInfo.startLinks.begin(); pStart != tWrapperInfo.startLinks.end(); ++pStart)
-								{
-									creativeInfo.startLinks.push_back(*pStart);
-								}
-								
-								for (vector<string>::iterator pEnd = tWrapperInfo.endLinks.begin(); pEnd != tWrapperInfo.endLinks.end(); ++pEnd)
-								{
-									creativeInfo.endLinks.push_back(*pEnd);
-								}
-
-								for (vector<string>::iterator pFirst = tWrapperInfo.firstQuartileLinks.begin(); pFirst != tWrapperInfo.firstQuartileLinks.end(); ++pFirst)
-								{
-									creativeInfo.firstQuartileLinks.push_back(*pFirst);
-								}
-
-								for (vector<string>::iterator pMid = tWrapperInfo.midpointLinks.begin(); pMid != tWrapperInfo.midpointLinks.end(); ++pMid)
-								{
-									creativeInfo.midpointLinks.push_back(*pMid);
-								}
-
-								for (vector<string>::iterator pThird = tWrapperInfo.thirdQuartileLinks.begin(); pThird != tWrapperInfo.thirdQuartileLinks.end(); ++pThird)
-								{
-									creativeInfo.thirdQuartileLinks.push_back(*pThird);
-								}
-
-								for (vector<string>::iterator pClose = tWrapperInfo.closeLinks.begin(); pClose != tWrapperInfo.closeLinks.end(); ++pClose)
-								{
-									creativeInfo.closeLinks.push_back(*pClose);
-								}
-
-								for (vector<string>::iterator pClick = tWrapperInfo.clickLinks.begin(); pClick != tWrapperInfo.clickLinks.end(); ++pClick)
-								{
-									creativeInfo.clickLinks.push_back(*pClick);
-								}
-							}
-
-							TiXmlElement* MaterialElement = CreativeElement->FirstChildElement();
-							if (MaterialElement)
-							{
-								//! 判断一下 Linear or CompanionAds or NonLinearAds
-								string  MaterialName = MakeToString(MaterialElement->Value());
-								if (MaterialName == "Linear" || MaterialName == "CompanionAds" || MaterialName == "NonLinearAds")
-								{
-									//tips
-									TiXmlElement* CreativeExtensionsElement = MaterialElement->FirstChildElement("CreativeExtensions");
-									if (CreativeExtensionsElement)
-									{ 
-										TiXmlElement* CreativeExtensionElement = CreativeExtensionsElement->FirstChildElement("CreativeExtension");
-										if (CreativeExtensionElement)
-										{
-											TiXmlElement* tipsElement = CreativeExtensionElement->FirstChildElement("Tips");
-											if (tipsElement)
-											{
-												TiXmlElement* UserAgentElement = tipsElement->FirstChildElement("UserAgent");
-												if (UserAgentElement)
-												{
-													creativeInfo.tips.userAgent = MakeToString(UserAgentElement->GetText());
-												}
-
-												TiXmlElement* RefererElement = tipsElement->FirstChildElement("Referer");
-												if(RefererElement)
-												{
-													creativeInfo.tips.referer = MakeToString(RefererElement->GetText());
-												}
-
-												TiXmlElement* ClickRateElement = tipsElement->FirstChildElement("ClickRate");
-												if (ClickRateElement)
-												{
-													//creativeInfo.tips.clickRate = MakeToInt(ClickRateElement->GetText());
-													creativeInfo.tips.clickRate = MakeToFloat(ClickRateElement->GetText());
-												}
-
-												TiXmlElement* HopsElement = tipsElement->FirstChildElement("Hops");
-												if (HopsElement)
-												{
-													creativeInfo.tips.hops = MakeToString(HopsElement->GetText());
-												}
-
-												TiXmlElement* MinDurationElement = tipsElement->FirstChildElement("MinDuration");
-												if (MinDurationElement)
-												{
-													creativeInfo.tips.minDuration = MakeToInt(MinDurationElement->GetText());
-												}
-
-												TiXmlElement* MaxDurationElement = tipsElement->FirstChildElement("MaxDuration");
-												if (MaxDurationElement)
-												{
-													creativeInfo.tips.maxDuration = MakeToInt(MaxDurationElement->GetText());
-												}
-
-												TiXmlElement* MinHopTimeElement = tipsElement->FirstChildElement("MinHopTime");
-												if(MinHopTimeElement)
-												{
-													creativeInfo.tips.minHopTime = MakeToInt(MinHopTimeElement->GetText());
-												}
-
-												TiXmlElement* MaxHopTimeElement = tipsElement->FirstChildElement("MaxHopTime");
-												if (MaxHopTimeElement)
-												{
-													creativeInfo.tips.maxHopTime = MakeToInt(MaxHopTimeElement->GetText());
-												}
-										
-												TiXmlElement* RuleElement = tipsElement->FirstChildElement("Rule");
-												if(RuleElement)
-												{
-													creativeInfo.tips.rule = MakeToString(RuleElement->GetText());
-												}
-										
-												TiXmlElement* GroupIDElement = tipsElement->FirstChildElement("GroupID");
-												if (GroupIDElement)
-												{
-													creativeInfo.tips.groupID = MakeToInt(GroupIDElement->GetText());
-												}
-										
-												TiXmlElement* RemoveCookieRateElement = tipsElement->FirstChildElement("RemoveCookieRate");
-												if (RemoveCookieRateElement)
-												{
-													creativeInfo.tips.removeCookieRate = MakeToInt(RemoveCookieRateElement->GetText());
-												}
-										
-												TiXmlElement* RemoveCookiesElement = tipsElement->FirstChildElement("RemoveCookies");
-												if (RemoveCookiesElement)
-												{
-													creativeInfo.tips.removeCookies = MakeToString(RemoveCookiesElement->GetText());
-												}
-										
-												TiXmlElement* RemoveFlashCookieRateElement = tipsElement->FirstChildElement("RemoveFlashCookieRate");
-												if(RemoveFlashCookieRateElement)
-												{
-													creativeInfo.tips.removeFlashCookieRate = MakeToInt(RemoveFlashCookieRateElement->GetText());
-												}
-
-												TiXmlElement* RemoveFlashCookiesElement = tipsElement->FirstChildElement("RemoveFlashCookies");
-												if(RemoveFlashCookiesElement)
-												{
-													creativeInfo.tips.removeFlashCookies = MakeToString(RemoveFlashCookiesElement->GetText());
-												}
-
-												TiXmlElement* LoadFlashElement = tipsElement->FirstChildElement("LoadFlash");
-												if (LoadFlashElement)
-												{
-													creativeInfo.tips.loadFlash = MakeToInt(LoadFlashElement->GetText());
-												}
-										
-												TiXmlElement* RefererModeElement = tipsElement->FirstChildElement("RefererMode");
-												if (RefererModeElement)
-												{
-													creativeInfo.tips.refererMode = MakeToInt(RefererModeElement->GetText());
-												}
-										
-												TiXmlElement* IsOpenWindowElement = tipsElement->FirstChildElement("IsOpenWindow");
-												if(IsOpenWindowElement)
-												{
-													creativeInfo.tips.isOpenWindow = MakeToInt(IsOpenWindowElement->GetText());
-												}
-										
-												TiXmlElement* DirectionalModeElement = tipsElement->FirstChildElement("DirectionalMode");
-												if(DirectionalModeElement)
-												{
-													creativeInfo.tips.directionalMode = MakeToInt(DirectionalModeElement->GetText());
-												}
-
-												TiXmlElement* DirectionalElement = tipsElement->FirstChildElement("Directional");
-												if (DirectionalElement)
-												{
-													creativeInfo.tips.directional = MakeToString(DirectionalElement->GetText());
-												}
-										
-												TiXmlElement* UrlFilterTypeElement = tipsElement->FirstChildElement("UrlFilterType");
-												if(UrlFilterTypeElement)
-												{
-													creativeInfo.tips.urlFilterType = MakeToInt(UrlFilterTypeElement->GetText());
-												}
-										
-												TiXmlElement* UrlFilterElement = tipsElement->FirstChildElement("UrlFilter");
-												if(UrlFilterElement)
-												{
-													creativeInfo.tips.urlFilter = MakeToString(UrlFilterElement->GetText());
-												}
-
-												TiXmlElement* PlatformElement = tipsElement->FirstChildElement("Platform");
-												if(PlatformElement)
-												{
-													char* pPlatform = (char*)MakeToString(PlatformElement->GetText());
-													creativeInfo.tips.platform = pPlatform;
-												}
-											}	
-										}
-									} 
-
-									//playtime
-									TiXmlElement* durationElement = MaterialElement->FirstChildElement("Duration");
-									if (durationElement)
-									{
-										creativeInfo.playtime = getPlaytime(durationElement->GetText());
-									} 
-									else 
-									{//! 如果没有，设为15s
-										creativeInfo.playtime = 15;
-									}
-									
-									//start|complete|firstQuartile|midpoint|thirdQuartile|close
-									TiXmlElement* trackingEventsElement = MaterialElement->FirstChildElement("TrackingEvents");
-									if (trackingEventsElement)
-									{
-										TiXmlElement* TrackingElement = trackingEventsElement->FirstChildElement("Tracking");
-										while(TrackingElement)
-										{
-											string eventname = MakeToString(TrackingElement->Attribute("event"));
-											if (eventname == "start")
-											{
-												creativeInfo.startLinks.push_back(MakeToString(TrackingElement->GetText()));
-											}
-											else if (eventname == "complete")
-											{
-												creativeInfo.endLinks.push_back(MakeToString(TrackingElement->GetText()));
-											}
-											else if (eventname == "firstQuartile")
-											{
-												creativeInfo.firstQuartileLinks.push_back(MakeToString(TrackingElement->GetText()));
-											}
-											else if (eventname == "midpoint")
-											{
-												creativeInfo.midpointLinks.push_back(MakeToString(TrackingElement->GetText()));
-											}
-											else if (eventname == "thirdQuartile")
-											{
-												creativeInfo.thirdQuartileLinks.push_back(MakeToString(TrackingElement->GetText()));
-											}
-											else if (eventname == "close")
-											{
-												creativeInfo.closeLinks.push_back(MakeToString(TrackingElement->GetText()));
-											}
-											
-											TrackingElement = TrackingElement->NextSiblingElement("Tracking");
-										}
-									}
-									
-									//link, clicklinks
-									/* VideoClicks 可能在 TrackingEvents中，这里做一下兼容*/
-									TiXmlElement* videoClicksElement = MaterialElement->FirstChildElement("VideoClicks");
-									if (NULL == videoClicksElement && NULL != trackingEventsElement)
-									{
-										videoClicksElement = trackingEventsElement->FirstChildElement("VideoClicks");
-									}
-									
-									if(videoClicksElement)
-									{
-										TiXmlElement* clickThroughElement = videoClicksElement->FirstChildElement("ClickThrough");
-										if (clickThroughElement)
-										{
-											creativeInfo.link = MakeToString(clickThroughElement->GetText());
-										}
-										
-										if (strInLineOrWrapperName == "Wrapper" && false == tWrapperInfo.link.empty())
-										{
-											creativeInfo.link = tWrapperInfo.link;
-										}
-
-										TiXmlElement* clicktrackingElement = videoClicksElement->FirstChildElement("ClickTracking");
-										while (clicktrackingElement)
-										{
-											creativeInfo.clickLinks.push_back(MakeToString(clicktrackingElement->GetText()));
-											clicktrackingElement = clicktrackingElement->NextSiblingElement("ClickTracking");
-										}
-									}
-								}
-							}
-							//判断此Ad节点是否存在start,1/4,1/2,3/4,complete,click点击,click监测,只统计含有jp.as.pptv.com的监测
-							FilterTracklinkLog(creativeInfo, vastParseLog);
-							//每个Creative封装成一个AdInfo,保存到vector<ADInfo> ads中;
-							ads.push_back(creativeInfo);
-							CreativeElement = CreativeElement->NextSiblingElement("Creative");
-						}
-						//发送vast配置解析日志
-						vastParseLog.SendXmlParseLog();
-					}
-				}
-			}		
+			AdElement = AdElement->NextSiblingElement("Ad");
+			continue;
 		}
-
-		//find next Ad
-		element = element->NextSiblingElement("Ad");
+		
+		// 判断是否是 InLine Or Wrapper，如果不是就放弃这个Ad，看下一个Ad
+		string  strInLineOrWrapperName = MakeToString(InLineOrWrapperElement->Value());
+		if (strInLineOrWrapperName != "InLine" && strInLineOrWrapperName != "Wrapper")
+		{
+			AdElement = AdElement->NextSiblingElement("Ad");
+			continue;
+		}
+		
+		//Wrapper中存在VASTAdTagURI, 则递归获取
+		TempWrapperInfo tWrapperInfo; 
+		bool bGetSucceed = GetVASTAdTagURI(vastParseLog, strInLineOrWrapperName, InLineOrWrapperElement, tWrapperInfo);
+		if(!bGetSucceed)
+		{
+			vastParseLog.IsAdEmpty = _T("1");
+//			vastParseLog.SendXmlParseLog();
+			AdElement = AdElement->NextSiblingElement("Ad");
+			continue;	//若VASTAdTagURI的链接，下载失败、解析失败或返回空，均跳过此<Ad>节点
+		}
+		
+		TiXmlElement* ImpressionElement = InLineOrWrapperElement->FirstChildElement("Impression");
+		vector<string> impressions;
+		while (ImpressionElement)
+		{
+			impressions.push_back(MakeToString(ImpressionElement->GetText()));
+			ImpressionElement = ImpressionElement->NextSiblingElement("Impression");
+		}
+		
+		TiXmlElement* CreativesElement = InLineOrWrapperElement->FirstChildElement("Creatives");
+		if (!CreativesElement)
+		{
+			vastParseLog.IsAdEmpty = _T("1");
+//			vastParseLog.SendXmlParseLog();
+			AdElement = AdElement->NextSiblingElement("Ad");
+			continue;
+		}
+		
+		TiXmlElement* CreativeElement = CreativesElement->FirstChildElement("Creative");
+		if (!CreativeElement)
+		{
+			vastParseLog.IsAdEmpty = _T("1");
+//			vastParseLog.SendXmlParseLog();
+			AdElement = AdElement->NextSiblingElement("Ad");
+			continue;
+		}
+		
+		//给XmlParseLog项赋初值
+		vastParseLog.IsAdEmpty = _T("0");
+		vastParseLog.existStartTrack = _T("0");
+		vastParseLog.existCompleteTrack = _T("0");
+		vastParseLog.existFirstQuartileTrack = _T("0");
+		vastParseLog.existMidpointTrack = _T("0");
+		vastParseLog.existThirdQuartileTrack = _T("0");
+		vastParseLog.existClickLink = _T("0");
+		vastParseLog.existClickTrack = _T("0");
+		
+		while (CreativeElement)
+		{
+			ADInfo creativeInfo;
+			
+			creativeInfo.adid = Adid;	//广告单号
+			
+			//合并<impression>的数据
+			for (vector<string>::iterator pImp = impressions.begin(); pImp != impressions.end(); ++pImp)
+				creativeInfo.startLinks.push_back(*pImp);
+			
+			//将Wrapper中VASTAdTagURI嵌套的数据读出
+			if (strInLineOrWrapperName == "Wrapper")
+				MergeVASTAdTagURIData(tWrapperInfo, creativeInfo);
+			
+			TiXmlElement* MaterialElement = CreativeElement->FirstChildElement();
+			if (MaterialElement)
+			{
+				string  MaterialName = MakeToString(MaterialElement->Value());
+				if (MaterialName == "Linear" || MaterialName == "CompanionAds" || MaterialName == "NonLinearAds")
+				{
+					//获取tips数据
+					GetTipsData(MaterialElement, creativeInfo);
+					
+					//获取playtime
+					TiXmlElement* durationElement = MaterialElement->FirstChildElement("Duration");
+					if (durationElement)
+						creativeInfo.playtime = GetPlaytime(durationElement->GetText());
+					else 
+						creativeInfo.playtime = 15;	//如果没有，设为15s
+					
+					//获取监测数据，start|complete|firstQuartile|midpoint|thirdQuartile|close
+					TiXmlElement* trackingEventsElement = MaterialElement->FirstChildElement("TrackingEvents");
+					if (trackingEventsElement)
+						GetTrackingData(trackingEventsElement, creativeInfo);
+					
+					//获取link, clicklinks /* VideoClicks 可能在 TrackingEvents中，这里做一下兼容*/
+					TiXmlElement* videoClicksElement = MaterialElement->FirstChildElement("VideoClicks");
+					if (NULL == videoClicksElement && NULL != trackingEventsElement)
+						videoClicksElement = trackingEventsElement->FirstChildElement("VideoClicks");
+					GetVideoClickData(videoClicksElement, strInLineOrWrapperName, tWrapperInfo.link, creativeInfo);
+				}
+			}
+			
+			FilterTracklinkLog(creativeInfo, vastParseLog);		//判断此Ad节点是否存在start,1/4,1/2,3/4,complete,click点击,click监测, 只统计含有jp.as.pptv.com的监测
+			ads.push_back(creativeInfo);						//每个Creative封装成一个AdInfo,保存到vector<ADInfo> ads中;
+			CreativeElement = CreativeElement->NextSiblingElement("Creative");
+		}
+		
+//		vastParseLog.SendXmlParseLog();						//发送vast配置解析日志
+		AdElement = AdElement->NextSiblingElement("Ad");	//遍历下一个<Ad>节点
 	}
-
+	
 	return true;
 }
 
